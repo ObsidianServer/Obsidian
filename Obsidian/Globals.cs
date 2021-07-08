@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Obsidian.API;
@@ -12,15 +13,24 @@ namespace Obsidian
 {
     public static class Globals
     {
+        [Obsolete("Inject HttpClient or HttpClientBuilder instead")]
         public static HttpClient HttpClient { get; } = new HttpClient();
+        
         public static XorshiftRandom Random { get; } = XorshiftRandom.Create();
+
+        [Obsolete("Inject IOptions<GlobalConfig> instead.")]
         public static GlobalConfig Config { get; set; }
+        
+        [Obsolete("Inject an ILogger<T> for the class, then using logger.BeginScope(\"Packets\")")]
         public static ILogger PacketLogger { get; set; }
+        
+        [Obsolete]
         public static DefaultContractResolver ContractResolver { get; } = new DefaultContractResolver
         {
             NamingStrategy = new SnakeCaseNamingStrategy()
         };
 
+        [Obsolete("Inject IOptions<JsonSerializerSettings> instead.")]
         public static JsonSerializerSettings JsonSettings { get; } = new JsonSerializerSettings
         {
             ContractResolver = ContractResolver,
